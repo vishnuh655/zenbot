@@ -1,4 +1,3 @@
-
 ## Reading the console output
 
 ![console](Capture.PNG)
@@ -11,11 +10,13 @@ From left to right ( for trendline not pictured above, which is neural ):
 - Volume in asset since last period (grey)
 - [RSI](http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:relative_strength_index_rsi) ANSI graph (red/green)
 - strategy inormation, in order:
+
 ```
 - col1: current last trade price
-- col2: The old trade last trade price averaged with the prediction. 
+- col2: The old trade last trade price averaged with the prediction.
 - If the predicted price and average of last trade price exceeds the current last trade price, then buy.. Like a neural-trendline.
 ```
+
 - Current signal or action, including `buy`, `sell`, `buying`, `selling`, `bought`, `sold` and `last_trade_worth` (percent change in the trend direction since last buy/sell)
 - Account balance (asset)
 - Account balance (currency)
@@ -24,7 +25,7 @@ From left to right ( for trendline not pictured above, which is neural ):
 
 The signaling for this strategy example:
 
-```
+````
           learn();
           var item = tlp.reverse();
           s.prediction = predict(item)
@@ -54,3 +55,4 @@ The signaling for this strategy example:
      }
     },
     ```
+````

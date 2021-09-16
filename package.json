@@ -116,8 +116,10 @@
   },
   "devDependencies": {
     "eslint": "^4.19.1",
+    "eslint-config-prettier": "^8.3.0",
     "geneticalgorithm": "^1.0.1",
     "json2csv": "^5.0.0",
+    "prettier": "^2.4.1",
     "round-precision": "^1.0.0",
     "run-parallel-limit": "^1.0.4",
     "shelljs": "^0.8.0",

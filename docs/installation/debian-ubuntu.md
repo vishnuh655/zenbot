@@ -21,4 +21,4 @@ npm install
 ```
 
 [Blog Post (Ubuntu 16.04)](https://jaynagpaul.com/algorithmic-crypto-trading?utm_source=zenbot)  
-[Video (Ubuntu 16.04)](https://youtu.be/BEhU55W9pBI)  
+[Video (Ubuntu 16.04)](https://youtu.be/BEhU55W9pBI)

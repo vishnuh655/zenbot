@@ -1,4 +1,5 @@
 ## Zenbot exchange API
+
 This document is written to help developers implement new extensions for Zenbot.
 
 It is reverse engineered from inspecting the Zenbot files and the GDAX extension and is not a definitive guide for developing an extension.
@@ -12,10 +13,13 @@ The input parameters are packed in the "opts" object, and the results from invok
 ## Error handling
 
 Errors are returned to calling program through a callback functon of this form:
+
 ```javascript
-cb (err)
+cb(err);
 ```
+
 The expected content of "err" is as follows:
+
 ```javascript
   { code: 'HTTP_STATUS', body: body }
 ```
@@ -24,16 +28,18 @@ The expected content of "err" is as follows:
 
 **Recoverable errors** affecting trades should be handled by zenbot, while others could be handled in the extension layer. This needs to be clarified.
 
-
 Some named errors are already handled by the main program (see getTrades below). These are:
+
 ```
   'ETIMEDOUT', // possibly recoverable
   'ENOTFOUND', // not recoverable (404?)
   'ECONNRESET' // possibly recoverable
 ```
+
 Zenbot may have some GDAX-specific code. In particular that pertains to return values from exchange functions. Return values in general should be handled in a exchange agnostic and standardized way to make it easiest possible to write extensions.
 
 **Some variables in the "exchange" object are worth mentioning**
+
 ```
   name: 'some_exchange_name'
   historyScan: 'forward', 'backward' or false
@@ -41,59 +47,79 @@ Zenbot may have some GDAX-specific code. In particular that pertains to return v
   takerFee: exchange_taker_fee (numeric) // Else set with a constant
   backfillRateLimit: some_value_fitting_exchange_policy or 0
 ```
+
 ## Functions
 
 **Connecting to the exchange for public requests**
+
 ```javascript
 funcion publicClient ()
 ```
+
 Called from:
-- extension/*/exchange.js
+
+- extension/\*/exchange.js
 
 Returns a "client" object for use in exchange public access functions.
 
 **Connecting and authenticating private requests**
+
 ```javascript
 function authedClient ()
 ```
+
 Called from:
-- extension/*/exchange.js
+
+- extension/\*/exchange.js
 
 The function gets parameters from conf.js in the c object
 In particular these are:
+
 ```
   c.<exchange>.key
   c.<exchange>.secret
 ```
+
 For specific exchanges also:
+
 ```
   c.bitstamp.client_id
   c.gdax.passphrase
 ```
+
 The functionm returns a "client" object for use in exchange authenticated access functions
 
 **Helper function for returning conformant error messages**
+
 ```javascript
 function statusErr (resp, body)
 ```
+
 Called from:
-- extension/*/exchange.js
+
+- extension/\*/exchange.js
 
 **Getting public history and trade data**
+
 ```javascript
 getTrades: function (opts, cb)
 ```
+
 Called from:
+
 - https://github.com/carlos8f/zenbot/blob/master/commands/backfill.js
 - https://github.com/carlos8f/zenbot/blob/master/commands/trade.js
 
 Input:
+
 ```
   opts.product_id
   opts.from
   opts.to
 ```
+
 Return:
+
 ```
   trades.length
   (array of?) {
@@ -104,7 +130,9 @@ Return:
     side : 'buy' or 'sell'
   }
 ```
+
 Expected error codes if error:
+
 ```
   err.code
 
@@ -112,34 +140,45 @@ Expected error codes if error:
   'ENOTFOUND', // not recoverable
   'ECONNRESET' // possibly recoverable
 ```
+
 Callback:
+
 ```javascript
-cb(null, trades)
+cb(null, trades);
 ```
 
 **Getting wallet balances**
+
 ```javascript
 getBalance: function (opts, cb)
 ```
+
 Called from:
+
 - https://github.com/carlos8f/zenbot/blob/master/lib/engine.js
 
 Input:
+
 ```
   opts.currency
   opts.asset
 ```
+
 Return:
+
 ```
   balance.asset
   balance.asset_hold
   balance.currency
   balance.currency_hold
 ```
+
 Callback:
+
 ```javascript
-cb(null, balance)
+cb(null, balance);
 ```
+
 Comment:
 Asset vs asset_hold and currency vs currency_hold is kind of mysterious to me.
 For most exchanges I would just return something similar to available_asset and available_currency
@@ -148,132 +187,179 @@ and not leave it to engine.js, because available_asset and available_currency ar
 values from a buy/sell view, IMHO. If someone knows better, please clarify
 
 **Getting public ticker data**
+
 ```javascript
 getQuote: function (opts, cb)
 ```
+
 Called from:
+
 - https://github.com/carlos8f/zenbot/blob/master/lib/engine.js
 - https://github.com/carlos8f/zenbot/blob/master/commands/buy.js
 - https://github.com/carlos8f/zenbot/blob/master/commands/sell.js
 
 Input:
+
 ```
   opts.product_id
 ```
+
 Return:
+
 ```
   {bid: value_of_bid, ask: value_of_ask}
 ```
+
 Callback:
+
 ```javascript
-cb(null, {bid: body.bid, ask: body.ask})
+cb(null, { bid: body.bid, ask: body.ask });
 ```
 
 **Canceling a placed order**
+
 ```javascript
 cancelOrder: function (opts, cb)
 ```
+
 Called from:
+
 - https://github.com/carlos8f/zenbot/blob/master/lib/engine.js
 
 Input:
+
 ```
   opts.order_id
 ```
+
 Callback:
+
 ```javascript
-cb()
+cb();
 ```
 
 **Buying function**
+
 ```javascript
 buy: function (opts, cb)
 ```
+
 Called from:
+
 - https://github.com/carlos8f/zenbot/blob/master/lib/engine.js
 
 Input:
+
 ```
   opts.price
   opts.size
 ```
+
 Returns:
+
 ```
 
 ```
+
 Callback:
+
 ```javascript
-cb(null, body)
+cb(null, body);
 ```
 
 **Selling function**
+
 ```javascript
 sell: function (opts, cb)
 ```
+
 Called from:
+
 - https://github.com/carlos8f/zenbot/blob/master/lib/engine.js
 
 Input:
+
 ```
   opts.price
   opts.size
 ```
+
 Returns:
+
 ```
 
 ```
+
 Callback:
+
 ```javascript
-cb(null, body)
+cb(null, body);
 ```
 
 **Getting data from a placed order**
+
 ```javascript
 getOrder: function (opts, cb)
 ```
+
 Called from:
+
 - https://github.com/carlos8f/zenbot/blob/master/lib/engine.js
 
 Input:
+
 ```
   opts.order_id
   opts.product_id
 ```
+
 Returns:
+
 ```
   order.status
 ```
+
 Expected values in https://github.com/carlos8f/zenbot/blob/master/lib/engine.js:
+
 - 'done', 'rejected'
-  If 'rejected' order.reject_reason = some_reason ('post only')
-Is '*post only*' spesific for GDAX?
-Comment: Needs some clarifying
+  If 'rejected' order.reject*reason = some_reason ('post only')
+  Is '\_post only*' spesific for GDAX?
+  Comment: Needs some clarifying
 
 Callback:
+
 ```javascript
-cb(null, body)
+cb(null, body);
 ```
 
 **Getting details from an executed trade**
+
 ```javascript
 getCursor: function (trade)
 ```
+
 Called from:
+
 - https://github.com/carlos8f/zenbot/blob/master/commands/backfill.js
 - https://github.com/carlos8f/zenbot/blob/master/commands/trade.js
 
 Input:
+
 ```
   trade - This is either a trade or a timestamp
 ```
+
 Return:
+
 ```
   trade id or timestamp. It really depends on the exchange API. Some, like Gemini, use only timestamps and will only need to return a timestamp. Others, like GDAX operate on trade ids and it is expected to return 'undefined' when passed an initial timestamp to start backfilling.
 
   Since backfilling requires a timestamp to select the numbers of days to backfill, it may not be possible to use this option if the exchange does not use timestamps for historical data. In this case return 'undefined' when passed a timestamp value.
 
 ```
+
 Callback:
+
 ```javascript
 
 ```

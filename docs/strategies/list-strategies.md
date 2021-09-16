@@ -1,4 +1,3 @@
-
 ```
 zenbot list-strategies
 

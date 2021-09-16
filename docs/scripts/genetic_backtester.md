@@ -15,6 +15,7 @@ cd ../../
 ## Usage
 
 Launch the genetic backtester from the zenbot root by directly invoking darwin.js:
+
 ```bash
 ./scripts/genetic_backtester/darwin.js --selector="bitfinex.ETH-USD" --days="10" --currency_capital="1000" --use_strategies="all | macd,trend_ema,etc" --population="101" --population_data="simulations/generation_data_[simtimestamp]_gen_[x].json"
 ```
@@ -22,6 +23,7 @@ Launch the genetic backtester from the zenbot root by directly invoking darwin.j
 ## Parameters
 
 The following parameters are available when executing darwin.js:
+
 ```
 
 // General Parameters

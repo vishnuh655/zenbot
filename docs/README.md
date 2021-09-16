@@ -44,6 +44,7 @@ npm link
 ```
 
 ### Ubuntu 16.04 Step-By-Step
+
 [Video](https://youtu.be/BEhU55W9pBI)
 [Blog Post](https://jaynagpaul.com/algorithmic-crypto-trading?utm_source=zenbot)
 
@@ -89,9 +90,11 @@ docker-compose exec server zenbot backfill <selector> --days <days>
 #### Updating docker
 
 In case you are behind on updates, you can run:
+
 ```
 docker pull deviavir/zenbot:unstable
 ```
+
 And re-run `docker-compose up -d` to start the new image.
 
 `deviavir/zenbot` is automatically updated after every merge.
@@ -136,6 +139,7 @@ You can also select start and end date:
 ```
 zenbot backfill <selector> --start="Unixtime in ms" --end="Unixtime in ms"
 ```
+
 Note you can use them separately.
 
 After you've backfilled, you can run a simulation:
@@ -603,9 +607,10 @@ c.order_adjust_time = 10000
 
 ## GUI
 
-A basic web UI is available at the url stated during startup.  This port can be configured in the conf.js or randomly assigned.
+A basic web UI is available at the url stated during startup. This port can be configured in the conf.js or randomly assigned.
 In it's infancy, there are a few caveats with the current UI.
-- In order to have statistics displayed, they must first be dumped from the CLI.  Pressing `D` will refresh the statistics on each refresh of the dashboard.
+
+- In order to have statistics displayed, they must first be dumped from the CLI. Pressing `D` will refresh the statistics on each refresh of the dashboard.
 - Currently the data is mostly static with the exception of the tradingview charts.
 - Currently only READ-ONLY
 
@@ -724,6 +729,7 @@ Supply zenbot with your TextBelt API key and zenbot will send SMS notifications 
 https://www.textbelt.com/
 
 ### Telegram
+
 Supply zenbot with your Telegram bot token and chat id zenbot will push notifications to your Telegram chat.
 https://telegram.org/
 
@@ -735,11 +741,13 @@ https://adamant.im/
 ## Rest API
 
 You can enable a Rest API for Zenbot by enabling the following configuration
+
 ```
 c.output.api = {}
 c.output.api.on = true
 c.output.api.port = 0 // 0 = random port
 ```
+
 You can choose a port, or pick 0 for a random port.
 
 Once you did that, you can call the API on: http://\<hostname\>:\<port\>/trades

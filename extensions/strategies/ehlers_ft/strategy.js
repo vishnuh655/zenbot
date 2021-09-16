@@ -34,101 +34,147 @@ https://discordapp.com/channels/316120967200112642/383023593942155274
 
 */
 
-const z = require('zero-fill'),
-  n = require('numbro'),
-  Phenotypes = require('../../../lib/phenotype'),
-  tv = require('../../../lib/helpers')
+const z = require("zero-fill"),
+  n = require("numbro"),
+  Phenotypes = require("../../../lib/phenotype"),
+  tv = require("../../../lib/helpers");
 
 module.exports = {
-  name: 'ehlers_fisher_transform',
-  description: '',
+  name: "ehlers_fisher_transform",
+  description: "",
 
-  getOptions: function() {
-    this.option('period', 'period length, same as --period_length', String, '30m')
-    this.option('period_length', 'period length, same as --period', String, '30m')
-    this.option('fish_pct_change', 'percent change of fisher transform for reversal', Number, 0)
-    this.option('length', 'number of past periods to use including current', Number, 10)
-    this.option('src', 'use period.close if not defined. can be hl2, hlc3, ohlc4, HAhlc3, HAohlc4', String, 'hl2')
-    this.option('pos_length', 'check this number of previous periods have opposing pos value', Number, 1)
+  getOptions: function () {
+    this.option(
+      "period",
+      "period length, same as --period_length",
+      String,
+      "30m"
+    );
+    this.option(
+      "period_length",
+      "period length, same as --period",
+      String,
+      "30m"
+    );
+    this.option(
+      "fish_pct_change",
+      "percent change of fisher transform for reversal",
+      Number,
+      0
+    );
+    this.option(
+      "length",
+      "number of past periods to use including current",
+      Number,
+      10
+    );
+    this.option(
+      "src",
+      "use period.close if not defined. can be hl2, hlc3, ohlc4, HAhlc3, HAohlc4",
+      String,
+      "hl2"
+    );
+    this.option(
+      "pos_length",
+      "check this number of previous periods have opposing pos value",
+      Number,
+      1
+    );
   },
 
-  calculate: function() {},
+  calculate: function () {},
 
-  onPeriod: function(s, cb) {
+  onPeriod: function (s, cb) {
     // console.log('')
     if (!s.eft) {
       s.eft = {
         n1: [],
         fish: [],
         pos: [],
-      }
-      s.eft_max_elements = Math.max(s.options.pos_length, 3)
+      };
+      s.eft_max_elements = Math.max(s.options.pos_length, 3);
     }
 
-    s.period.src = tv.src(s.options.src, s.period, s.lookback[0])
+    s.period.src = tv.src(s.options.src, s.period, s.lookback[0]);
 
-    let lbks = s.lookback.slice(0, s.options.length - 1).map(p => p.src),
+    let lbks = s.lookback.slice(0, s.options.length - 1).map((p) => p.src),
       maxH = Math.max(s.period.src, ...lbks),
-      minL = Math.min(s.period.src, ...lbks)
+      minL = Math.min(s.period.src, ...lbks);
 
-    s.eft.n1.unshift(0.33 * 2 * ((s.period.src - minL) / (maxH - minL) - 0.5) + 0.67 * tv.nz(s.eft.n1[0]))
+    s.eft.n1.unshift(
+      0.33 * 2 * ((s.period.src - minL) / (maxH - minL) - 0.5) +
+        0.67 * tv.nz(s.eft.n1[0])
+    );
 
-    let n2 = tv.iff(s.eft.n1[0] > 0.99, 0.999, tv.iff(s.eft.n1[0] < -0.99, -0.999, s.eft.n1[0]))
+    let n2 = tv.iff(
+      s.eft.n1[0] > 0.99,
+      0.999,
+      tv.iff(s.eft.n1[0] < -0.99, -0.999, s.eft.n1[0])
+    );
 
-    s.eft.fish.unshift(0.5 * Math.log((1 + n2) / (1 - n2)) + 0.5 * tv.nz(s.eft.fish[0]))
+    s.eft.fish.unshift(
+      0.5 * Math.log((1 + n2) / (1 - n2)) + 0.5 * tv.nz(s.eft.fish[0])
+    );
 
     s.eft.pos.unshift(
-      tv.iff(s.eft.fish[0] > tv.nz(s.eft.fish[1] * (1 + s.options.fish_pct_change / 100)), 1,
-        tv.iff(s.eft.fish[0] < tv.nz(s.eft.fish[1] * (1 - s.options.fish_pct_change / 100)), -1, tv.nz(s.eft.pos[0], 0))))
+      tv.iff(
+        s.eft.fish[0] >
+          tv.nz(s.eft.fish[1] * (1 + s.options.fish_pct_change / 100)),
+        1,
+        tv.iff(
+          s.eft.fish[0] <
+            tv.nz(s.eft.fish[1] * (1 - s.options.fish_pct_change / 100)),
+          -1,
+          tv.nz(s.eft.pos[0], 0)
+        )
+      )
+    );
 
     if (!s.in_preroll) {
       if (s.options.pos_length === 1) {
         if (s.eft.pos[0] === 1) {
-          s.signal = 'buy'
+          s.signal = "buy";
         } else if (s.eft.pos[0] === -1) {
-          s.signal = 'sell'
+          s.signal = "sell";
         } else {
-          s.signal = null
+          s.signal = null;
         }
       } else {
-
         let pos = s.eft.pos.slice(1, s.options.pos_length + 1),
-          posUp = s.eft.pos[0] === -1 && pos.every(pos => pos === 1),
-          posDn = s.eft.pos[0] === 1 && pos.every(pos => pos === -1)
+          posUp = s.eft.pos[0] === -1 && pos.every((pos) => pos === 1),
+          posDn = s.eft.pos[0] === 1 && pos.every((pos) => pos === -1);
 
         if (posUp) {
-          s.signal = 'buy'
+          s.signal = "buy";
         } else if (posDn) {
-          s.signal = 'sell'
-        } else
-          s.signal = null
+          s.signal = "sell";
+        } else s.signal = null;
       }
     }
 
     // cleanup
     if (s.eft.pos.length > s.eft_max_elements)
-      Object.keys(s.eft).forEach(k => {
-        s.eft[k].pop()
-      })
+      Object.keys(s.eft).forEach((k) => {
+        s.eft[k].pop();
+      });
 
-    cb()
+    cb();
   },
 
-  onReport: function(s) {
-    var cols = []
-    cols.push(z(10, 'F[' + n(s.eft.fish[0]).format('#.000') + ']', ''))
-    cols.push(z(10, ' P[' + n(s.eft.pos[0]).format('##') + ']', ''))
-    return cols
+  onReport: function (s) {
+    var cols = [];
+    cols.push(z(10, "F[" + n(s.eft.fish[0]).format("#.000") + "]", ""));
+    cols.push(z(10, " P[" + n(s.eft.pos[0]).format("##") + "]", ""));
+    return cols;
   },
 
   phenotypes: {
-
     //General Options
-    period_length: Phenotypes.RangePeriod(5, 300, 'm'),
+    period_length: Phenotypes.RangePeriod(5, 300, "m"),
     min_periods: Phenotypes.Range(10, 40),
     markdown_buy_pct: Phenotypes.RangeFloat(0, 10),
     markup_sell_pct: Phenotypes.RangeFloat(0, 10),
-    order_type: Phenotypes.ListOption(['maker', 'taker']),
+    order_type: Phenotypes.ListOption(["maker", "taker"]),
     sell_stop_pct: Phenotypes.Range0(1, 50),
     buy_stop_pct: Phenotypes.Range0(1, 50),
     profit_stop_enable_pct: Phenotypes.Range(1, 20),
@@ -138,9 +184,16 @@ module.exports = {
     length: Phenotypes.Range(1, 30),
     fish_pct_change: Phenotypes.Range(-25, 75),
     pos_length: Phenotypes.Range(1, 6),
-    src: Phenotypes.ListOption(['close', 'hl2', 'hlc3', 'ohlc4', 'HAhlc3', 'HAohlc4'])
-  }
-}
+    src: Phenotypes.ListOption([
+      "close",
+      "hl2",
+      "hlc3",
+      "ohlc4",
+      "HAhlc3",
+      "HAohlc4",
+    ]),
+  },
+};
 
 /*
 

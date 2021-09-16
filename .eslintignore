@@ -1,5 +1,5 @@
-scripts/auto_backtester/node_modules/*
-scripts/genetic_backtester/node_modules/*
-scripts/genetic_algo/node_modules/*
+scripts/auto_backtester/*
+scripts/genetic_backtester/*
+scripts/genetic_algo/*
 dist
 templates/dashboard_assets/js/*

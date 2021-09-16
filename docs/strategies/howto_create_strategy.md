@@ -10,11 +10,13 @@ https://discord.gg/z2VyhmxP8P
 First of all, you are advised to read the base zenbot documentation, that can be found [here](https://github.com/DeviaVir/zenbot/tree/unstable/docs "here").
 
 ## # How Zenbot works with strategies?
+
 Zenbot load a strategy by finding the file extensions/strategies/`<strategy-name>`/strategy.js
 
 ## # What to do?
 
 ### ## 1. Create a new strategy file
+
 You should create a new folder inside strategies folder and name it whatever you want.
 You also can create a copy of the ..\extensions\strategies\noop folder and rename it.
 NOOP strategy is just an example of a strategy file.
@@ -36,20 +38,23 @@ This is what you probably will find inside the NOOP strategy file:
      onPeriod: function (s, cb) {
        cb()
      },
-    onReport: function () { 
+    onReport: function () {
       var cols = []
       return cols
     }
     }
 
 ## # How strategy file is organized?
+
 Zenbot strategy file is organized in 4 sections:
+
 - getOptions
 - calculate
 - onPeriod
 - onReport
 
 ## getOptions
+
 Zenbot will search where the variables needed for your strategy.
 
     getOptions: function (s) {
@@ -60,6 +65,7 @@ Zenbot will search where the variables needed for your strategy.
     }
 
 ## calculate
+
 It's called each time there is a new trade. it's the right place to update indicators.
 
     // calculate MACD
@@ -71,13 +77,11 @@ It's called each time there is a new trade. it's the right place to update indic
       if (s.period.signal) {
         s.period.macd_histogram = s.period.macd - s.period.signal
     }
-    
 
 Or if you simply want to use RSI indicator:
 
      // RSI indicator
      rsi(s, 'rsi', s.options.rsi_periods)
-
 
 ## onPeriod
 
@@ -85,8 +89,8 @@ It's called at the end of each period. It will be the right place to send 'buy' 
 
 For example if you want to buy or sell based on RSI indicator:
 
-    if (s.period.rsi < 30) { 
-      s.signal = 'buy' 
+    if (s.period.rsi < 30) {
+      s.signal = 'buy'
     }
 
 ## onReport
@@ -107,18 +111,16 @@ Example:
          }
          cols.push(z(4, n(s.period.rsi).format('0'), ' ')[color])
        }
-       return cols 
+       return cols
        },
-  
 
-
-  
 ## # How can I look for past values?
+
 ## Lookback
 
 Each time the period change, the current period is put at the beginning of `s.lookback` and `s.period` is reset. So you can check the last period in `s.lookback[0]`, the one before in `s.lookback[1]`, and so on.
 
-
 ### Thanks to:
+
 - BAKfr
 - TxTheNoob

@@ -5,7 +5,7 @@ server:
     - ./extensions:/app/extensions
   links:
     - mongodb
-  command: [ "trade", "--paper" ]
+  command: ["trade", "--paper"]
   restart: always
   tty: true
 

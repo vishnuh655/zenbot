@@ -6,17 +6,18 @@
     */
 
 module.exports = (opts) => {
+  if (opts === undefined) opts = {};
 
-  if (opts === undefined) 
-    opts = { }
+  if (opts.tradesArray === undefined) opts.tradesArray = [];
 
-  if (opts.tradesArray === undefined)
-    opts.tradesArray = [] 
- 
   return {
-    getInitialOptsObject: () => { },
-    getTrades: (/*tradeSearchOpts*/) => { return { 
-      then: (cb) => { cb( opts.tradesArray ) } }}
-  } // trade service
-  
-}
+    getInitialOptsObject: () => {},
+    getTrades: (/*tradeSearchOpts*/) => {
+      return {
+        then: (cb) => {
+          cb(opts.tradesArray);
+        },
+      };
+    },
+  }; // trade service
+};

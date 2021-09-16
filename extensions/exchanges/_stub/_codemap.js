@@ -1,6 +1,6 @@
 module.exports = {
-  _ns: 'zenbot',
+  _ns: "zenbot",
 
-  'exchanges.stub': require('./exchange'),
-  'exchanges.list[]': '#exchanges.stub'
-}
+  "exchanges.stub": require("./exchange"),
+  "exchanges.list[]": "#exchanges.stub",
+};
