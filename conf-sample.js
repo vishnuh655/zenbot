@@ -49,6 +49,15 @@ c.binance = {};
 c.binance.key = process.env.ZENBOT_BINANCE_API_KEY || "YOUR-API-KEY";
 c.binance.secret = process.env.ZENBOT_BINANCE_SECRET || "YOUR-API-SECRET";
 
+// to enable 5roi trading, enter your API credentials:
+c.fiveRoi = {};
+c.fiveRoi.key =
+  process.env.FIVE_ROI_API_KEY ||
+  "YeOohJl6R4rAD8VqrfN9C1NPljcrIafEIUUspXZ5ugiLb3j2TLbCAMUnPeNsuX0b";
+c.fiveRoi.secret =
+  process.env.FIVE_ROI_SECRET ||
+  "Zuc9YOCweud5TkyHzbRQLOxeeWp3VBelGGQw8oVL6BzQMEy02yZwbZqE8v5tI650";
+
 // to enable Binance US trading, enter your API credentials:
 c.binanceus = {};
 c.binanceus.key = "YOUR-API-KEY";

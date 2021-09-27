@@ -81,6 +81,7 @@ module.exports = function binance(conf) {
     },
 
     getTrades: function (opts, cb) {
+      console.log(opts);
       var func_args = [].slice.call(arguments);
       var client = publicClient();
       var startTime = null;
