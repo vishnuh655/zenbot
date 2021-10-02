@@ -3,3 +3,4 @@ scripts/genetic_backtester/*
 scripts/genetic_algo/*
 dist
 templates/dashboard_assets/js/*
+ui/*
