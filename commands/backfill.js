@@ -92,9 +92,10 @@ module.exports = function (program, conf) {
           start_time = new Date().getTime() - 86400000 * cmd.days;
         }
       }
-      resume_markers
-        .find({ selector: selector.normalized })
-        .toArray(function (err, results) {
+      console.log(resume_markers);
+      resume_markers.find(
+        { selector: selector.normalized },
+        function (err, results) {
           if (err) throw err;
           markers = results.sort(function (a, b) {
             if (mode === "backward") {
@@ -107,7 +108,9 @@ module.exports = function (program, conf) {
             return 0;
           });
           getNext();
-        });
+        }
+      );
+      // .toArray(function (err, results) {});
 
       function getNext() {
         var opts = { product_id: selector.product_id };
@@ -223,12 +226,19 @@ module.exports = function (program, conf) {
                 "\nskipping " + diff + " hrs of previously collected data"
               );
             }
-            resume_markers
-              .replaceOne({ _id: marker.id }, marker, { upsert: true })
-              .then(setupNext)
-              .catch(function (err) {
+            resume_markers.update(
+              { _id: marker.id },
+              marker,
+              { upsert: true },
+              function (err, numReplaced, upsert) {
                 if (err) throw err;
-              });
+                setupNext;
+              }
+            );
+            // .then(setupNext)
+            // .catch(function (err) {
+            //   if (err) throw err;
+            // });
           })
           .catch(function (err) {
             if (err) {
@@ -309,7 +319,7 @@ module.exports = function (program, conf) {
           marker.to = marker.to ? Math.max(marker.to, cursor) : cursor;
           marker.newest_time = Math.max(marker.newest_time, trade.time);
         }
-        return tradesCollection.replaceOne({ _id: trade.id }, trade, {
+        return tradesCollection.update({ _id: trade.id }, trade, {
           upsert: true,
         });
       }

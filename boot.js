@@ -71,22 +71,52 @@ module.exports = function (cb) {
       (authMechanism ? "&authMechanism=" + authMechanism : "");
   }
 
-  require("mongodb").MongoClient.connect(
-    connectionString,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    function (err, client) {
-      if (err) {
-        console.error("WARNING: MongoDB Connection Error: ", err);
-        console.error(
-          "WARNING: without MongoDB some features (such as backfilling/simulation) may be disabled."
-        );
-        console.error("Attempted authentication string: " + connectionString);
-        cb(null, zenbot);
-        return;
-      }
-      var db = client.db(zenbot.conf.mongo.db);
-      _.set(zenbot, "conf.db.mongo", db);
-      cb(null, zenbot);
-    }
-  );
+  const Datastore = require("@seald-io/nedb");
+  const db = {};
+  db.trades = new Datastore({ filename: "data/trades", autoload: true });
+  db.resume_markers = new Datastore({
+    filename: "data/resume_markers",
+    autoload: true,
+  });
+  db.balances = new Datastore({ filename: "data/balances" });
+  db.sessions = new Datastore({ filename: "data/sessions" });
+  db.periods = new Datastore({ filename: "data/periods" });
+  db.my_trades = new Datastore({ filename: "data/my_trades" });
+  db.sim_results = new Datastore({ filename: "data/sim_results" });
+  _.set(zenbot, "conf.db", db);
+  cb(null, zenbot);
+
+  // db.loadDatabase(function (err) {
+  //   if (err) {
+  //     console.error("WARNING: MongoDB Connection Error: ", err);
+  //     console.error(
+  //       "WARNING: without MongoDB some features (such as backfilling/simulation) may be disabled."
+  //     );
+  //     console.error("Attempted authentication string: " + connectionString);
+  //     cb(null, zenbot);
+  //     return;
+  //   }
+  //   _.set(zenbot, "conf.db.mongo", db);
+  //   cb(null, zenbot);
+  //   // Now commands will be executed
+  // });
+
+  // require("mongodb").MongoClient.connect(
+  //   connectionString,
+  //   { useNewUrlParser: true, useUnifiedTopology: true },
+  //   function (err, client) {
+  //     if (err) {
+  //       console.error("WARNING: MongoDB Connection Error: ", err);
+  //       console.error(
+  //         "WARNING: without MongoDB some features (such as backfilling/simulation) may be disabled."
+  //       );
+  //       console.error("Attempted authentication string: " + connectionString);
+  //       cb(null, zenbot);
+  //       return;
+  //     }
+  //     var db = client.db(zenbot.conf.mongo.db);
+  //     _.set(zenbot, "conf.db.mongo", db);
+  //     cb(null, zenbot);
+  //   }
+  // );
 };
