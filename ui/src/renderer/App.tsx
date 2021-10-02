@@ -2,6 +2,7 @@ import React from 'react';
 import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
 // import icon from '../../assets/icon.svg';
 import './App.global.css';
+// import opts from '../../../extensions/exchanges/5roi/test';
 
 const Main = () => {
   return (
@@ -12,6 +13,7 @@ const Main = () => {
 };
 
 export default function App() {
+  console.log('opts');
   return (
     <Router>
       <Switch>
