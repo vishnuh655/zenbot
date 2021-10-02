@@ -496,7 +496,11 @@ module.exports = function (program, conf) {
           .sort(opts.sort)
           .limit(opts.limit);
 
-        var totalTrades = await collectionCursor.count(true);
+        // console.log(collectionCursor.db.count({}));
+        var totalTrades = 0;
+        await collectionCursor.db.count({}, function (err, count) {
+          totalTrades = count;
+        });
         const collectionCursorStream = collectionCursor.stream();
 
         var numTrades = 0;
