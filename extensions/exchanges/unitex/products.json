@@ -1,0 +1,156 @@
+[
+  {
+    "id": 3,
+    "asset": "EOS",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "EOS/USDU"
+  },
+  {
+    "id": 4,
+    "asset": "BTC",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "BTC/USDU"
+  },
+  {
+    "id": 5,
+    "asset": "ETH",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "ETH/USDU"
+  },
+  {
+    "id": 17,
+    "asset": "USDC",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "USDC/USDU"
+  },
+  {
+    "id": 18,
+    "asset": "LINK",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "LINK/USDU"
+  },
+  {
+    "id": 2,
+    "asset": "UNTB",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 500000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "UNTB/USDU"
+  },
+  {
+    "id": 19,
+    "asset": "DAI",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "DAI/USDU"
+  },
+  {
+    "id": 20,
+    "asset": "UNI",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "UNI/USDU"
+  },
+  {
+    "id": 21,
+    "asset": "WAX",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "WAX/USDU"
+  },
+  {
+    "id": 8,
+    "asset": "USD",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "USD/USDU"
+  },
+  {
+    "id": 11,
+    "asset": "USDT",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "USDT/USDU"
+  },
+  {
+    "id": 1,
+    "asset": "CRU",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 300000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "CRU/USDU"
+  },
+  {
+    "id": 9,
+    "asset": "EUR",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "EUR/USDU"
+  },
+  {
+    "id": 22,
+    "asset": "XRP",
+    "currency": "USDU",
+    "min_size": 0,
+    "max_size": 100000,
+    "min_total": 0,
+    "increment": "0.000001",
+    "asset_increment": "0.000001",
+    "label": "XRP/USDU"
+  }
+]
